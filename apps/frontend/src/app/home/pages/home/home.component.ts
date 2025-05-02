@@ -29,17 +29,17 @@ export class HomeComponent implements OnInit {
 
   filterByTag(tag: string): void {
     if (this.selectedTags.includes(tag)) {
-      this.selectedTags = this.selectedTags.filter((t) => t !== tag);
+      this.selectedTags = [...this.selectedTags.filter((t) => t !== tag)];
     } else {
-      this.selectedTags.push(tag);
+      this.selectedTags = [tag, ...this.selectedTags];
     }
 
     if (this.selectedTags.length > 0) {
-      this.filteredBookmarks = this.bookmarks.filter((bookmark) =>
-        this.selectedTags.some((tag) => bookmark.tags.includes(tag))
-      );
+      this.filteredBookmarks = [
+        ...this.bookmarks.filter((bookmark) => this.selectedTags.some((tag) => bookmark.tags.includes(tag))),
+      ];
     } else {
-      this.filteredBookmarks = this.bookmarks;
+      this.filteredBookmarks = [...this.bookmarks];
     }
   }
 }

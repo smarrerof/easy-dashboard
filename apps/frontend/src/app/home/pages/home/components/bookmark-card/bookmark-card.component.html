@@ -13,15 +13,24 @@
   <!-- Tags -->
   <div class="mt-3 flex flex-wrap gap-2 text-xs text-gray-500">
     @for (tag of bookmark.tags; track tag) {
-      <span class="bg-gray-100 px-2 py-1 rounded">#{{ tag }}</span>
+      <span
+        class="px-3 py-1 rounded text-xs cursor-pointer"
+        tabindex="0"
+        [class.bg-blue-500]="selectedTags.includes(tag)"
+        [class.text-white]="selectedTags.includes(tag)"
+        [class.hover\:bg-blue-600]="selectedTags.includes(tag)"
+        [class.bg-gray-100]="!selectedTags.includes(tag)"
+        [class.text-gray-700]="!selectedTags.includes(tag)"
+        [class.hover\:bg-gray-200]="!selectedTags.includes(tag)"
+        (click)="onTagClicked(tag)"
+        (keydown)="onTagClicked(tag)">
+        #{{ tag }}
+      </span>
     }
   </div>
 
   <!-- State and visits -->
   <div class="mt-3 flex items-center justify-between text-sm text-gray-600">
-    <!-- <div class="flex items-center space-x-2">
-      <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Public</span>
-    </div> -->
     <div class="flex items-center space-x-2">
       @if (bookmark.isActive) {
         <span class="w-3 h-3 rounded-full bg-green-200" title="Activo"></span>

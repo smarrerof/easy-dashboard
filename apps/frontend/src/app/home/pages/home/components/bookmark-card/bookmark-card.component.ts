@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Bookmark } from '@app/home/models/bookmark';
 
 @Component({
@@ -10,4 +10,11 @@ import { Bookmark } from '@app/home/models/bookmark';
 })
 export class BookmarkCardComponent {
   @Input() bookmark!: Bookmark;
+  @Input() selectedTags!: string[];
+
+  @Output() tagClicked = new EventEmitter<string>();
+
+  onTagClicked(tag: string): void {
+    this.tagClicked.emit(tag);
+  }
 }
