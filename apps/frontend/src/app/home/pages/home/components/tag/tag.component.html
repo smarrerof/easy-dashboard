@@ -1,0 +1,13 @@
+<span
+  class="px-3 py-1 rounded text-xs cursor-pointer"
+  tabindex="0"
+  [class.bg-blue-500]="selected"
+  [class.text-white]="selected"
+  [class.hover\:bg-blue-600]="selected"
+  [class.bg-gray-100]="!selected"
+  [class.text-gray-700]="!selected"
+  [class.hover\:bg-gray-200]="!selected"
+  (click)="onTagClicked()"
+  (keydown)="onTagClicked()">
+  #{{ tag }}
+</span>

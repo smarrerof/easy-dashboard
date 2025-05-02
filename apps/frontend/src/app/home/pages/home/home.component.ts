@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BookmarkService } from '../../services/bookmark.service';
 import { Bookmark } from '../../models/bookmark';
 import { BookmarkCardComponent } from './components/bookmark-card/bookmark-card.component';
+import { TagComponent } from './components/tag/tag.component';
 
 @Component({
   selector: 'app-home',
-  imports: [BookmarkCardComponent],
+  imports: [BookmarkCardComponent, TagComponent],
   providers: [BookmarkService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
