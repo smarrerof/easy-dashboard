@@ -6,5 +6,6 @@ export interface Bookmark {
   description: string;
   url: string;
   tags: string[];
+  isActive: boolean;
   visits: number;
 }

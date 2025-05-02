@@ -15,6 +15,7 @@ export class BookmarkService {
         color: 'rgb(255, 179, 0)', // Plex yellow
         description: 'Media server',
         tags: ['media', 'server'],
+        isActive: true,
         visits: 120,
       },
       {
@@ -25,6 +26,7 @@ export class BookmarkService {
         color: 'rgb(0, 166, 82)', // AdGuard green
         description: 'Ad blocker and privacy protection',
         tags: ['network', 'privacy'],
+        isActive: true,
         visits: 85,
       },
       {
@@ -35,6 +37,7 @@ export class BookmarkService {
         color: 'rgb(0, 122, 204)', // Sonarr blue
         description: 'TV show management',
         tags: ['media', 'tv'],
+        isActive: false,
         visits: 60,
       },
       {
@@ -45,6 +48,7 @@ export class BookmarkService {
         color: 'rgb(0, 122, 204)', // Radarr blue
         description: 'Movie management',
         tags: ['media', 'movies'],
+        isActive: false,
         visits: 45,
       },
       {
@@ -55,6 +59,7 @@ export class BookmarkService {
         color: 'rgb(255, 102, 0)', // Tautulli orange
         description: 'Plex usage monitoring',
         tags: ['media', 'monitoring'],
+        isActive: false,
         visits: 30,
       },
       {
@@ -65,6 +70,7 @@ export class BookmarkService {
         color: 'rgb(38, 139, 210)', // qBittorrent blue
         description: 'Torrent client',
         tags: ['downloads', 'torrent'],
+        isActive: true,
         visits: 75,
       },
       {
@@ -75,6 +81,7 @@ export class BookmarkService {
         color: 'rgb(0, 150, 136)', // Home Assistant teal
         description: 'Home automation platform',
         tags: ['automation', 'home'],
+        isActive: true,
         visits: 95,
       },
       {
@@ -85,6 +92,7 @@ export class BookmarkService {
         color: 'rgb(0, 123, 255)', // Portainer blue
         description: 'Docker container management',
         tags: ['devops', 'docker'],
+        isActive: true,
         visits: 50,
       },
     ];

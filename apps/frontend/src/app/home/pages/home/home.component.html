@@ -1,5 +1,23 @@
+<div class="flex flex-wrap gap-2 my-4 mx-8">
+  @for (tag of tags; track tag) {
+    <span
+      class="px-3 py-1 rounded text-xs cursor-pointer"
+      tabindex="0"
+      [class.bg-blue-500]="selectedTags.includes(tag)"
+      [class.text-white]="selectedTags.includes(tag)"
+      [class.hover\:bg-blue-600]="selectedTags.includes(tag)"
+      [class.bg-gray-100]="!selectedTags.includes(tag)"
+      [class.text-gray-700]="!selectedTags.includes(tag)"
+      [class.hover\:bg-gray-200]="!selectedTags.includes(tag)"
+      (click)="filterByTag(tag)"
+      (keydown.enter)="filterByTag(tag)">
+      #{{ tag }}
+    </span>
+  }
+</div>
+
 <div class="flex flex-wrap gap-4 my-4 mx-8 justify-center items-center">
-  @for (bookmark of bookmarks; track bookmark.id) {
+  @for (bookmark of filteredBookmarks; track bookmark.id) {
     <app-bookmark-card [bookmark]="bookmark" />
   }
 </div>
