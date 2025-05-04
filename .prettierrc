@@ -6,6 +6,7 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
+
   "overrides": [
     {
       "files": "*.html",
@@ -13,5 +14,7 @@
         "parser": "angular"
       }
     }
-  ]
+  ],
+
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
