@@ -3,10 +3,11 @@ import { BookmarkService } from '../../services/bookmark.service';
 import { Bookmark } from '../../models/bookmark';
 import { BookmarkCardComponent } from './components/bookmark-card/bookmark-card.component';
 import { TagComponent } from './components/tag/tag.component';
+import { BookmarkDialogComponent } from './components/bookmark-dialog/bookmark-dialog.component';
 
 @Component({
   selector: 'app-home',
-  imports: [BookmarkCardComponent, TagComponent],
+  imports: [BookmarkCardComponent, BookmarkDialogComponent, TagComponent],
   providers: [BookmarkService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -16,6 +17,10 @@ export class HomeComponent implements OnInit {
   filteredBookmarks!: Bookmark[];
   selectedTags: string[] = [];
   tags!: string[];
+
+  showAddBookmarkDialog = false;
+
+  newBookmark = { title: '', url: '' };
 
   constructor(private bookmarkService: BookmarkService) {}
 
@@ -42,5 +47,22 @@ export class HomeComponent implements OnInit {
     } else {
       this.filteredBookmarks = [...this.bookmarks];
     }
+  }
+
+  openBookmarkDialog(): void {
+    this.showAddBookmarkDialog = true;
+  }
+
+  acceptBookmarkDialog(event: Bookmark): void {
+    this.showAddBookmarkDialog = false;
+    this.bookmarkService.add(event).subscribe((bookmark) => {
+      this.bookmarks = [...this.bookmarks, bookmark];
+      this.filteredBookmarks = [...this.filteredBookmarks, bookmark];
+      this.tags = Array.from(new Set(this.bookmarks.flatMap((bookmark) => bookmark.tags))).sort();
+    });
+  }
+
+  closeBookmarkDialog(): void {
+    this.showAddBookmarkDialog = false;
   }
 }

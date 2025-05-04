@@ -1,11 +1,23 @@
-<div class="flex flex-wrap gap-2 my-4 mx-8">
-  @for (tag of tags; track tag) {
-    <app-tag [selected]="selectedTags.includes(tag)" [tag]="tag" (tagClicked)="filterByTag($event)"></app-tag>
-  }
+<div class="mx-8 my-4 flex items-center justify-between gap-2">
+  <div class="flex max-w-full flex-nowrap gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+    @for (tag of tags; track tag) {
+      <app-tag [selected]="selectedTags.includes(tag)" [tag]="tag" (tagClicked)="filterByTag($event)"></app-tag>
+    }
+  </div>
+  <button
+    class="flex h-full items-center rounded bg-green-500 px-4 py-2 text-sm text-white hover:bg-green-600"
+    (click)="openBookmarkDialog()">
+    <span class="material-icons">add</span>
+    Añadir
+  </button>
 </div>
 
-<div class="flex flex-wrap gap-4 my-4 mx-8 justify-center items-center">
+<div class="mx-8 my-4 flex flex-wrap items-center justify-center gap-4">
   @for (bookmark of filteredBookmarks; track bookmark.id) {
     <app-bookmark-card [bookmark]="bookmark" [selectedTags]="selectedTags" (tagClicked)="filterByTag($event)" />
   }
 </div>
+
+@if (showAddBookmarkDialog) {
+  <app-bookmark-dialog (acceptDialog)="acceptBookmarkDialog($event)" (closeDialog)="closeBookmarkDialog()" />
+}
