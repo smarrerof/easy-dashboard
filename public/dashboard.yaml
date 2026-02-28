@@ -1,0 +1,107 @@
+version: 1
+updatedAt: '2026-02-28T00:00:00Z'
+
+servers:
+  - id: main-server
+    name: Main Server
+    host: 192.168.1.10
+    location: rack
+    categories:
+      - id: media
+        name: Media
+        services:
+          - id: plex
+            name: Plex
+            description: Personal media server for movies, series and music.
+            url: http://192.168.1.10
+            port: 32400
+            status: active
+            tags:
+              - media
+              - streaming
+          - id: emby
+            name: Emby
+            description: Media server with transcoding and multi-user support.
+            url: http://192.168.1.10
+            port: 8096
+            status: active
+            tags:
+              - media
+              - streaming
+          - id: jellyfin
+            name: Jellyfin
+            description: Free and open-source media system.
+            url: http://192.168.1.10
+            port: 8097
+            status: active
+            tags:
+              - media
+              - streaming
+      - id: media-tools
+        name: Media Tools
+        services:
+          - id: unmanic
+            name: Unmanic
+            description: Library optimiser — automated transcoding pipeline.
+            url: http://192.168.1.10
+            port: 8888
+            status: active
+            tags:
+              - transcoding
+              - automation
+      - id: downloads
+        name: Downloads
+        services:
+          - id: qbittorrent
+            name: qBittorrent
+            description: Open-source BitTorrent client with web interface.
+            url: http://192.168.1.10
+            port: 8080
+            status: active
+            tags:
+              - downloads
+              - torrent
+      - id: dev
+        name: Development
+        services:
+          - id: gitea
+            name: Gitea
+            description: Lightweight self-hosted Git service.
+            url: http://192.168.1.10
+            port: 3000
+            status: active
+            tags:
+              - git
+              - dev
+      - id: network
+        name: Network
+        services:
+          - id: adguard-main
+            name: AdGuard Home
+            description: Network-wide ad blocking and local DNS server.
+            url: http://192.168.1.10
+            port: 3001
+            status: active
+            tags:
+              - dns
+              - adblock
+              - network
+
+  - id: backup-server
+    name: Backup Server
+    host: 192.168.1.20
+    location: rack
+    categories:
+      - id: network
+        name: Network
+        services:
+          - id: adguard-backup
+            name: AdGuard Home
+            description: Backup DNS server for redundant ad blocking.
+            url: http://192.168.1.20
+            port: 3001
+            status: active
+            tags:
+              - dns
+              - adblock
+              - network
