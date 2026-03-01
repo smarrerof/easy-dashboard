@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'yaml';
@@ -9,14 +9,25 @@ import type { Dashboard, Server, Category, Service } from '../models/dashboard.m
 export class DashboardService {
   private readonly http = inject(HttpClient);
 
-  /** Fetches, parses and validates the dashboard YAML, then logs the result to the console. */
-  async load(): Promise<Dashboard> {
-    const text = await firstValueFrom(
-      this.http.get('/dashboard.yaml', { responseType: 'text' }),
-    );
-    const dashboard = this.parseDashboard(parse(text));
-    console.log(JSON.stringify(dashboard, null, 2));
-    return dashboard;
+  readonly dashboard = signal<Dashboard | null>(null);
+  readonly isLoading = signal(false);
+  readonly error = signal<string | null>(null);
+
+  /** Fetches and parses the dashboard YAML, updating reactive signals. */
+  async load(): Promise<void> {
+    this.isLoading.set(true);
+    this.error.set(null);
+
+    try {
+      const text = await firstValueFrom(
+        this.http.get('/dashboard.yaml', { responseType: 'text' }),
+      );
+      this.dashboard.set(this.parseDashboard(parse(text)));
+    } catch (err) {
+      this.error.set(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 
   /** Returns true if `value` is a non-null, non-array object. */
@@ -98,7 +109,8 @@ export class DashboardService {
 
     if (typeof raw['id'] !== 'string') throw new Error(`${path}.id: must be a string`);
     if (typeof raw['name'] !== 'string') throw new Error(`${path}.name: must be a string`);
-    if (typeof raw['description'] !== 'string') throw new Error(`${path}.description: must be a string`);
+    if (typeof raw['description'] !== 'string')
+      throw new Error(`${path}.description: must be a string`);
     if (typeof raw['url'] !== 'string') throw new Error(`${path}.url: must be a string`);
     if (typeof raw['port'] !== 'number') throw new Error(`${path}.port: must be a number`);
     if (raw['status'] !== 'active' && raw['status'] !== 'inactive')

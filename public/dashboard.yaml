@@ -69,7 +69,7 @@ servers:
             description: Lightweight self-hosted Git service.
             url: http://192.168.1.10
             port: 3000
-            status: active
+            status: inactive
             tags:
               - git
               - dev

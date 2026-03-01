@@ -1,0 +1,42 @@
+<main class="page">
+  <!-- Loading skeleton -->
+  @if (dashboardService.isLoading()) {
+    <div class="skeleton-list">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="glass-static skeleton-card">
+          <div class="skeleton-row">
+            <div class="skeleton skeleton--icon"></div>
+            <div class="skeleton-text">
+              <div class="skeleton skeleton--title"></div>
+              <div class="skeleton skeleton--subtitle"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton--bar"></div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (!dashboardService.isLoading() && dashboardService.error()) {
+    <div class="glass-static error-card">
+      <p class="error-message">{{ dashboardService.error() }}</p>
+      <button type="button" class="glass retry-btn" (click)="dashboardService.load()">
+        Retry
+      </button>
+    </div>
+  }
+
+  <!-- Content -->
+  @if (!dashboardService.isLoading() && !dashboardService.error() && dashboardService.dashboard()) {
+    @if (!isDesktop() && selectedServer()) {
+      <app-server-detail [server]="selectedServer()!" (back)="goBack()" />
+    } @else {
+      <app-server-list
+        [servers]="dashboardService.dashboard()!.servers"
+        [isDesktop]="isDesktop()"
+        (serverSelected)="selectServer($event)"
+      />
+    }
+  }
+</main>

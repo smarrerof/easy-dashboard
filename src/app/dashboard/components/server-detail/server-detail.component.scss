@@ -1,0 +1,53 @@
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.summary {
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.summary__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.meta {
+  margin: 2px 0 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

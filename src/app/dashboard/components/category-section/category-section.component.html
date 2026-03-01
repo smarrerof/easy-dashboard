@@ -1,0 +1,19 @@
+<section>
+  @if (collapsible()) {
+    <button type="button" class="toggle-btn" (click)="toggle()">
+      <span class="chevron">{{ isExpanded() ? '▾' : '▸' }}</span>
+      <span class="title">{{ category().name }}</span>
+      <span class="count">({{ category().services.length }})</span>
+    </button>
+  } @else {
+    <h3 class="section-title">{{ category().name }}</h3>
+  }
+
+  @if (!collapsible() || isExpanded()) {
+    <div class="services" [class.services--compact]="compact()">
+      @for (service of category().services; track service.id) {
+        <app-service-card [service]="service" [compact]="compact()" />
+      }
+    </div>
+  }
+</section>

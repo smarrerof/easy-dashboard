@@ -1,0 +1,43 @@
+@if (expanded()) {
+  <!-- Desktop: static expanded card -->
+  <article class="glass-static card animate-in">
+    <div class="card__header">
+      <span class="icon">{{ icon() }}</span>
+      <div>
+        <h2 class="name">{{ server().name }}</h2>
+        <p class="meta">{{ server().host }} · {{ server().location }}</p>
+      </div>
+    </div>
+
+    <div class="card__health">
+      <app-health-bar [active]="activeCount()" [total]="totalCount()" />
+    </div>
+
+    <div class="card__categories">
+      @for (category of server().categories; track category.id; let i = $index) {
+        <app-category-section
+          [category]="category"
+          [compact]="true"
+          [collapsible]="true"
+          [defaultExpanded]="i === 0"
+        />
+      }
+    </div>
+  </article>
+} @else {
+  <!-- Mobile: clickable card -->
+  <button type="button" class="glass card card--clickable animate-in" (click)="selected.emit(server())">
+    <div class="card__header">
+      <div class="card__left">
+        <span class="icon">{{ icon() }}</span>
+        <div>
+          <h2 class="name">{{ server().name }}</h2>
+          <p class="meta">{{ server().host }} · {{ server().location }}</p>
+        </div>
+      </div>
+      <span class="arrow">→</span>
+    </div>
+
+    <app-health-bar [active]="activeCount()" [total]="totalCount()" />
+  </button>
+}

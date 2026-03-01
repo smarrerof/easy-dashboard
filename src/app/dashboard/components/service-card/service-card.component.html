@@ -1,0 +1,40 @@
+@if (compact()) {
+  <a
+    [href]="fullUrl()"
+    target="_blank"
+    rel="noopener noreferrer"
+    [title]="service().description"
+    class="glass card card--compact"
+  >
+    <div class="card__left">
+      <span class="status-dot" [class]="service().status"></span>
+      <span class="name">{{ service().name }}</span>
+    </div>
+    <span class="port">:{{ service().port }}</span>
+  </a>
+} @else {
+  <a
+    [href]="fullUrl()"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="glass card"
+  >
+    <div class="card__header">
+      <div class="card__title">
+        <span class="status-dot" [class]="service().status"></span>
+        <span class="name">{{ service().name }}</span>
+      </div>
+      <span class="port">:{{ service().port }}</span>
+    </div>
+
+    <p class="description">{{ service().description }}</p>
+
+    @if (service().tags && service().tags!.length > 0) {
+      <div class="tags">
+        @for (tag of service().tags!; track tag) {
+          <span class="tag">#{{ tag }}</span>
+        }
+      </div>
+    }
+  </a>
+}

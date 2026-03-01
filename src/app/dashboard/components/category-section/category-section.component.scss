@@ -1,0 +1,49 @@
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.chevron {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.count {
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.services {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  &--compact {
+    gap: 8px;
+  }
+}

@@ -1,6 +1,8 @@
 /* Dark theme (default) */
 :root {
   --bg: #0a0a0f;
+  --status-active: #10b981;
+  --status-off: #71717a;
   --glass: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-hover: rgba(255, 255, 255, 0.08);
@@ -15,6 +17,8 @@
 /* Light theme */
 [data-theme='light'] {
   --bg: #f4f4f5;
+  --status-active: #059669;
+  --status-off: #a1a1aa;
   --glass: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.08);
   --glass-hover: rgba(255, 255, 255, 0.9);
@@ -52,4 +56,63 @@ body {
   &:hover {
     background: var(--glass-hover);
   }
+}
+
+/* Glass card without hover */
+.glass-static {
+  background: var(--glass);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+/* Status dot */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.active {
+    background: var(--status-active);
+    box-shadow: 0 0 8px var(--status-active);
+  }
+
+  &.inactive {
+    background: var(--status-off);
+  }
+}
+
+/* Fade-in entrance */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+/* Skeleton pulse */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.skeleton {
+  background: var(--glass-border);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
 }

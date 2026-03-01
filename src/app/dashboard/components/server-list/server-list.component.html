@@ -1,0 +1,13 @@
+@if (isDesktop()) {
+  <div class="grid">
+    @for (server of servers(); track server.id) {
+      <app-server-card [server]="server" [expanded]="true" />
+    }
+  </div>
+} @else {
+  <div class="list">
+    @for (server of servers(); track server.id) {
+      <app-server-card [server]="server" (selected)="serverSelected.emit($event)" />
+    }
+  </div>
+}

@@ -1,0 +1,23 @@
+<div class="animate-in">
+  <button type="button" class="back-btn" (click)="back.emit()">
+    <span>←</span>
+    <span>Back</span>
+  </button>
+
+  <div class="glass-static summary">
+    <div class="summary__header">
+      <span class="icon">{{ icon() }}</span>
+      <div>
+        <h1 class="name">{{ server().name }}</h1>
+        <p class="meta">{{ server().host }} · {{ server().location }}</p>
+      </div>
+    </div>
+    <app-health-bar [active]="activeCount()" [total]="totalCount()" />
+  </div>
+
+  <div class="categories">
+    @for (category of server().categories; track category.id) {
+      <app-category-section [category]="category" />
+    }
+  </div>
+</div>
