@@ -116,7 +116,7 @@ export class DashboardService {
     if (raw['status'] !== 'active' && raw['status'] !== 'inactive')
       throw new Error(`${path}.status: must be "active" or "inactive"`);
 
-    const service: Service = {
+    return {
       id: raw['id'],
       name: raw['name'],
       description: raw['description'],
@@ -124,13 +124,5 @@ export class DashboardService {
       port: raw['port'],
       status: raw['status'],
     };
-
-    if (raw['tags'] !== undefined) {
-      if (!Array.isArray(raw['tags']) || !raw['tags'].every((t) => typeof t === 'string'))
-        throw new Error(`${path}.tags: must be a string array`);
-      service.tags = raw['tags'];
-    }
-
-    return service;
   }
 }

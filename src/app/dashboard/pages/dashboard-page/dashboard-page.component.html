@@ -3,15 +3,12 @@
   @if (dashboardService.isLoading()) {
     <div class="skeleton-list">
       @for (i of [1, 2, 3]; track i) {
-        <div class="glass-static skeleton-card">
+        <div class="skeleton-card">
           <div class="skeleton-row">
-            <div class="skeleton skeleton--icon"></div>
-            <div class="skeleton-text">
-              <div class="skeleton skeleton--title"></div>
-              <div class="skeleton skeleton--subtitle"></div>
-            </div>
+            <div class="skeleton-block sk-name"></div>
+            <div class="skeleton-block sk-health"></div>
           </div>
-          <div class="skeleton skeleton--bar"></div>
+          <div class="skeleton-block sk-meta"></div>
         </div>
       }
     </div>
@@ -19,10 +16,11 @@
 
   <!-- Error state -->
   @if (!dashboardService.isLoading() && dashboardService.error()) {
-    <div class="glass-static error-card">
-      <p class="error-message">{{ dashboardService.error() }}</p>
-      <button type="button" class="glass retry-btn" (click)="dashboardService.load()">
-        Retry
+    <div class="error-panel">
+      <span class="error-label">[error]</span>
+      <span class="error-message">{{ dashboardService.error() }}</span>
+      <button type="button" class="retry-btn" (click)="dashboardService.load()">
+        [retry]
       </button>
     </div>
   }

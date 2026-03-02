@@ -1,6 +1,1 @@
-<div class="health-bar-row">
-  <div class="health-bar">
-    <div class="fill" [class]="level()" [style.width.%]="percent()"></div>
-  </div>
-  <span class="label">{{ active() }}/{{ total() }}</span>
-</div>
+<span class="health" [class]="level()">{{ blocks() }} {{ active() }}/{{ total() }}</span>

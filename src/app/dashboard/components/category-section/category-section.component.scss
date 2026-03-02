@@ -1,49 +1,77 @@
-.toggle-btn {
+.toggle-btn,
+.section-header {
   display: flex;
   align-items: center;
   gap: 6px;
   width: 100%;
-  margin-bottom: 8px;
-  padding: 0;
+  padding: 10px 0 6px;
   background: transparent;
   border: none;
   cursor: pointer;
   text-align: left;
+  color: inherit;
+
+  &:focus-visible {
+    outline: 1px solid var(--amber);
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
 }
 
-.chevron {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+.section-header {
+  cursor: default;
+}
+
+.toggle-icon {
+  font-size: var(--text-sm);
+  color: var(--amber);
+  flex-shrink: 0;
+  width: 10px;
+  text-align: center;
 }
 
 .title {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--text-2);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 .count {
-  font-size: 0.6875rem;
-  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  color: var(--text-3);
+  white-space: nowrap;
 }
 
-.section-title {
-  margin: 0 0 12px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+/* Animated collapse */
+.body-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 200ms ease-in-out;
+
+  &--collapsed {
+    grid-template-rows: 0fr;
+  }
+}
+
+.body-inner {
+  overflow: hidden;
 }
 
 .services {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  padding-bottom: 4px;
 
   &--compact {
-    gap: 8px;
+    padding: 0;
   }
 }

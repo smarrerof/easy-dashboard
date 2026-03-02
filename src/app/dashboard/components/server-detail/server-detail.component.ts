@@ -15,10 +15,6 @@ export class ServerDetailComponent {
   readonly server = input.required<Server>();
   readonly back = output<void>();
 
-  protected readonly icon = computed(() =>
-    this.server().name.toLowerCase().includes('mac') ? '💻' : '🖥️',
-  );
-
   protected readonly activeCount = computed(
     () =>
       this.server()

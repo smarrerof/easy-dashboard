@@ -2,68 +2,84 @@
   display: block;
 }
 
-.card {
-  padding: 20px;
+/* ── Desktop panel ── */
+.panel {
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+}
+
+.panel__body {
+  padding: 0 16px 12px;
+}
+
+.head-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* ── Mobile row ── */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   width: 100%;
+  padding: 12px 16px;
   text-align: left;
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
 
-  &--clickable {
-    cursor: pointer;
-    border: none;
-    display: block;
-    transition: background 0.2s ease, box-shadow 0.2s ease;
-
-    &:hover {
-      box-shadow: 0 0 12px var(--accent-glow);
-    }
+  &:focus-visible {
+    outline: 1px solid var(--amber);
+    outline-offset: 2px;
   }
 }
 
-.card__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.card__left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.icon {
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.name {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.meta {
-  margin: 2px 0 0;
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-}
-
-.arrow {
-  color: var(--text-secondary);
-  font-size: 1.125rem;
-}
-
-.card__health {
-  margin-bottom: 16px;
-}
-
-.card__categories {
+.row__info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--glass-border);
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* ── Shared text ── */
+.server-name {
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.server-meta {
+  font-size: var(--text-xs);
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  font-size: 16px;
+  color: var(--text-3);
+  line-height: var(--text-md);
+  flex-shrink: 0;
 }

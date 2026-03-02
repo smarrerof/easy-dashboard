@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  OnInit,
+  type OnInit,
   computed,
   inject,
   signal,

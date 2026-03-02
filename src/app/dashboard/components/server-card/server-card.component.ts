@@ -18,10 +18,6 @@ export class ServerCardComponent {
 
   readonly selected = output<Server>();
 
-  protected readonly icon = computed(() =>
-    this.server().name.toLowerCase().includes('mac') ? '💻' : '🖥️',
-  );
-
   protected readonly activeCount = computed(
     () =>
       this.server()

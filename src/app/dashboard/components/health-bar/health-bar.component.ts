@@ -20,4 +20,11 @@ export class HealthBarComponent {
     const p = this.percent();
     return p >= 70 ? 'good' : p >= 40 ? 'warning' : 'bad';
   });
+
+  /** Unicode block-character progress string (8 segments). */
+  protected readonly blocks = computed(() => {
+    if (this.total() === 0) return '░░░░░░░░';
+    const filled = Math.round((this.active() / this.total()) * 8);
+    return '█'.repeat(filled) + '░'.repeat(8 - filled);
+  });
 }

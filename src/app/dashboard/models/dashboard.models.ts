@@ -5,7 +5,6 @@ export interface Service {
   url: string;
   port: number;
   status: 'active' | 'inactive';
-  tags?: string[];
 }
 
 export interface Category {

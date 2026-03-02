@@ -4,12 +4,11 @@
     target="_blank"
     rel="noopener noreferrer"
     [title]="service().description"
-    class="glass card card--compact"
+    class="row"
+    [class.row--inactive]="service().status === 'inactive'"
   >
-    <div class="card__left">
-      <span class="status-dot" [class]="service().status"></span>
-      <span class="name">{{ service().name }}</span>
-    </div>
+    <span class="dot" [class]="service().status === 'active' ? 'dot-active' : 'dot-inactive'" aria-hidden="true">●</span>
+    <span class="name">{{ service().name }}</span>
     <span class="port">:{{ service().port }}</span>
   </a>
 } @else {
@@ -17,24 +16,14 @@
     [href]="fullUrl()"
     target="_blank"
     rel="noopener noreferrer"
-    class="glass card"
+    class="card"
+    [class.card--inactive]="service().status === 'inactive'"
   >
-    <div class="card__header">
-      <div class="card__title">
-        <span class="status-dot" [class]="service().status"></span>
-        <span class="name">{{ service().name }}</span>
-      </div>
+    <div class="card__head">
+      <span class="dot" [class]="service().status === 'active' ? 'dot-active' : 'dot-inactive'" aria-hidden="true">●</span>
+      <span class="name">{{ service().name }}</span>
       <span class="port">:{{ service().port }}</span>
     </div>
-
     <p class="description">{{ service().description }}</p>
-
-    @if (service().tags && service().tags!.length > 0) {
-      <div class="tags">
-        @for (tag of service().tags!; track tag) {
-          <span class="tag">#{{ tag }}</span>
-        }
-      </div>
-    }
   </a>
 }

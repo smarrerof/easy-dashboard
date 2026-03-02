@@ -1,18 +1,15 @@
-<div class="animate-in">
+<div class="detail animate-in">
   <button type="button" class="back-btn" (click)="back.emit()">
-    <span>←</span>
-    <span>Back</span>
+    <span aria-hidden="true">←</span>
+    <span>back</span>
   </button>
 
-  <div class="glass-static summary">
-    <div class="summary__header">
-      <span class="icon">{{ icon() }}</span>
-      <div>
-        <h1 class="name">{{ server().name }}</h1>
-        <p class="meta">{{ server().host }} · {{ server().location }}</p>
-      </div>
+  <div class="summary">
+    <div class="summary__row">
+      <span class="server-name">{{ server().name }}</span>
+      <app-health-bar [active]="activeCount()" [total]="totalCount()" />
     </div>
-    <app-health-bar [active]="activeCount()" [total]="totalCount()" />
+    <p class="server-meta">{{ server().host }} · {{ server().location }}</p>
   </div>
 
   <div class="categories">

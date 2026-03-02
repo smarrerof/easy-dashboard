@@ -16,27 +16,18 @@ servers:
             url: http://192.168.1.10
             port: 32400
             status: active
-            tags:
-              - media
-              - streaming
           - id: emby
             name: Emby
             description: Media server with transcoding and multi-user support.
             url: http://192.168.1.10
             port: 8096
             status: active
-            tags:
-              - media
-              - streaming
           - id: jellyfin
             name: Jellyfin
             description: Free and open-source media system.
             url: http://192.168.1.10
             port: 8097
             status: active
-            tags:
-              - media
-              - streaming
       - id: media-tools
         name: Media Tools
         services:
@@ -46,9 +37,6 @@ servers:
             url: http://192.168.1.10
             port: 8888
             status: active
-            tags:
-              - transcoding
-              - automation
       - id: downloads
         name: Downloads
         services:
@@ -58,9 +46,6 @@ servers:
             url: http://192.168.1.10
             port: 8080
             status: active
-            tags:
-              - downloads
-              - torrent
       - id: dev
         name: Development
         services:
@@ -70,9 +55,6 @@ servers:
             url: http://192.168.1.10
             port: 3000
             status: inactive
-            tags:
-              - git
-              - dev
       - id: network
         name: Network
         services:
@@ -82,10 +64,6 @@ servers:
             url: http://192.168.1.10
             port: 3001
             status: active
-            tags:
-              - dns
-              - adblock
-              - network
 
   - id: backup-server
     name: Backup Server
@@ -101,7 +79,3 @@ servers:
             url: http://192.168.1.20
             port: 3001
             status: active
-            tags:
-              - dns
-              - adblock
-              - network

@@ -1,19 +1,15 @@
 @if (expanded()) {
-  <!-- Desktop: static expanded card -->
-  <article class="glass-static card animate-in">
-    <div class="card__header">
-      <span class="icon">{{ icon() }}</span>
-      <div>
-        <h2 class="name">{{ server().name }}</h2>
-        <p class="meta">{{ server().host }} · {{ server().location }}</p>
+  <!-- Desktop: full panel -->
+  <article class="panel animate-in">
+    <div class="panel__head">
+      <div class="head-left">
+        <span class="server-name">{{ server().name }}</span>
+        <span class="server-meta">{{ server().host }} · {{ server().location }}</span>
       </div>
-    </div>
-
-    <div class="card__health">
       <app-health-bar [active]="activeCount()" [total]="totalCount()" />
     </div>
 
-    <div class="card__categories">
+    <div class="panel__body">
       @for (category of server().categories; track category.id; let i = $index) {
         <app-category-section
           [category]="category"
@@ -25,19 +21,13 @@
     </div>
   </article>
 } @else {
-  <!-- Mobile: clickable card -->
-  <button type="button" class="glass card card--clickable animate-in" (click)="selected.emit(server())">
-    <div class="card__header">
-      <div class="card__left">
-        <span class="icon">{{ icon() }}</span>
-        <div>
-          <h2 class="name">{{ server().name }}</h2>
-          <p class="meta">{{ server().host }} · {{ server().location }}</p>
-        </div>
-      </div>
-      <span class="arrow">→</span>
+  <!-- Mobile: clickable row -->
+  <button type="button" class="row animate-in" (click)="selected.emit(server())">
+    <span class="chevron" aria-hidden="true">›</span>
+    <div class="row__info">
+      <span class="server-name">{{ server().name }}</span>
+      <span class="server-meta">{{ server().host }} · {{ server().location }}</span>
     </div>
-
     <app-health-bar [active]="activeCount()" [total]="totalCount()" />
   </button>
 }
