@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'yaml';
 
@@ -22,12 +22,27 @@ export class DashboardService {
       const text = await firstValueFrom(
         this.http.get('/dashboard.yaml', { responseType: 'text' }),
       );
-      this.dashboard.set(this.parseDashboard(parse(text)));
+      let parsed: unknown;
+      try {
+        parsed = parse(text);
+      } catch {
+        throw new Error('dashboard.yaml has invalid YAML syntax — check the file for formatting errors.');
+      }
+      this.dashboard.set(this.parseDashboard(parsed));
     } catch (err) {
-      this.error.set(err instanceof Error ? err.message : 'Unknown error');
+      this.error.set(this.toErrorMessage(err));
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  /** Maps a caught error to a human-readable message. */
+  private toErrorMessage(err: unknown): string {
+    if (err instanceof HttpErrorResponse) {
+      if (err.status === 404) return 'dashboard.yaml not found — place the file in the data/ folder.';
+      return `Server error ${err.status}: ${err.statusText}`;
+    }
+    return err instanceof Error ? err.message : 'Unknown error';
   }
 
   /** Returns true if `value` is a non-null, non-array object. */

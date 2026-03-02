@@ -1,0 +1,8 @@
+.angular/
+.claude/
+.git/
+
+*.md
+
+dist/
+node_modules/

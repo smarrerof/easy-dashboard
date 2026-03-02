@@ -1,0 +1,11 @@
+services:
+  easy-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: ghcr.io/smarrerof/easy-dashboard:dev
+    ports:
+      - "8080:80"
+    volumes:
+      - ./data:/usr/share/nginx/html/data:ro
+    restart: unless-stopped
