@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: ghcr.io/smarrerof/easy-dashboard:dev
+    image: ghcr.io/smarrerof/easy-dashboard:latest
     ports:
       - "8080:80"
     volumes:
