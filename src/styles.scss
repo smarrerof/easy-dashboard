@@ -1,3 +1,13 @@
+/* ─── Fonts ──────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/assets/fonts/jetbrains-mono-400.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ─── Terminal Design System ─────────────────────────────────────────── */
 
 :root {
@@ -22,11 +32,11 @@
 
   --font: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
 
-  --text-xs:   10px;
-  --text-sm:   11px;
-  --text-base: 12px;
-  --text-md:   13px;
-  --text-lg:   15px;
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   17px;
 
   --radius: 0px;
 }
