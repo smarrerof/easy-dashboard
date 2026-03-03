@@ -1,0 +1,49 @@
+.page {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 20px 16px;
+
+  @media (min-width: 768px) {
+    padding: 28px 24px;
+  }
+}
+
+.error-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--red-dim);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius);
+}
+
+.error-label {
+  font-size: var(--text-sm);
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+.error-message {
+  font-size: var(--text-sm);
+  color: var(--text-2);
+  flex: 1;
+}
+
+.home-btn {
+  padding: 3px 8px;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: var(--text-sm);
+  color: var(--text-1);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: border-color 150ms ease, color 150ms ease;
+
+  &:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+}
