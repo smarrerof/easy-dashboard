@@ -99,17 +99,24 @@ services:
 docker compose up -d
 ```
 
-### Construcción local desde el código fuente
+### Construcción desde el repositorio
 
-Si prefieres construir la imagen tú mismo:
+Si prefieres construir la imagen directamente desde el código fuente del repositorio:
+
+```bash
+# Última versión de main
+docker build -t easy-dashboard .
+
+# Versión específica
+docker build --build-arg VERSION=0.1.0 -t easy-dashboard:0.1.0 .
+```
+
+Y en el `docker-compose.yml`:
 
 ```yaml
 services:
   easy-dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    image: easy-dashboard:local
+    image: easy-dashboard:0.1.0
     ports:
       - "8080:80"
     volumes:
@@ -118,7 +125,7 @@ services:
 ```
 
 ```bash
-docker compose up --build -d
+docker compose up -d
 ```
 
 ---
