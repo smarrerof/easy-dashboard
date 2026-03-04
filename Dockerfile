@@ -14,6 +14,9 @@ RUN npm run build
 # Stage 2 — Runtime
 FROM nginx:alpine
 
+ARG VERSION=main
+ENV APP_VERSION=${VERSION}
+
 COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/easy-dashboard/browser /usr/share/nginx/html
 COPY --from=builder /app/docker/40-generate-config.sh /docker-entrypoint.d/40-generate-config.sh

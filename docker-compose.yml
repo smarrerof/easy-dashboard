@@ -6,8 +6,9 @@ services:
     image: ghcr.io/smarrerof/easy-dashboard:latest
     ports:
       - "8080:80"
-    environment:                                                                                              
-      - POLL_INTERVAL=0 # Optional: Set the poll interval in seconds (default: 30, 0 to disable)    
+    environment:
+      - POLL_INTERVAL=0 # Optional: Set the poll interval in seconds (default: 30, 0 to disable)
+      - APP_VERSION=dev
     volumes:
       - ./data:/usr/share/nginx/html/data:ro
     restart: unless-stopped

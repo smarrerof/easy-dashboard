@@ -7,6 +7,7 @@ import type { Dashboard, Server, Category, Service } from '../models/dashboard.m
 
 interface AppConfig {
   reloadInterval: number;
+  appVersion?: string;
 }
 
 declare global {
