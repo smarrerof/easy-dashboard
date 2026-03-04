@@ -79,3 +79,8 @@ Rules:
 - Use `/** … */` — never `//` for method documentation
 - Document `@param` and `@returns` only when their purpose is not obvious from the signature
 - No `@param` for `self-explanatory` arguments like `id: string` or `index: number`
+
+## Git workflow
+
+- Commit and push only to the current branch (`develop` or a feature branch)
+- Never commit or push directly to `main` — merging to `main` triggers a new `latest` Docker image publish
