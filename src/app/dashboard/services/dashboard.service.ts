@@ -1,9 +1,19 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, type DestroyRef } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'yaml';
 
 import type { Dashboard, Server, Category, Service } from '../models/dashboard.models';
+
+interface AppConfig {
+  reloadInterval: number;
+}
+
+declare global {
+  interface Window {
+    APP_CONFIG?: AppConfig;
+  }
+}
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -12,6 +22,15 @@ export class DashboardService {
   readonly dashboard = signal<Dashboard | null>(null);
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly notification = signal<{ type: 'info' | 'warn'; message: string } | null>(null);
+
+  private notificationTimer: ReturnType<typeof setTimeout> | null = null;
+  private lastYaml: string | null = null;
+
+  /** Reads the poll interval (in seconds) from window.APP_CONFIG, defaulting to 30. Set to 0 to disable polling. */
+  private get pollInterval(): number {
+    return window.APP_CONFIG?.reloadInterval ?? 30;
+  }
 
   /** Fetches and parses the dashboard YAML, updating reactive signals. */
   async load(): Promise<void> {
@@ -28,12 +47,59 @@ export class DashboardService {
       } catch {
         throw new Error('dashboard.yaml has invalid YAML syntax — check the file for formatting errors.');
       }
+      this.lastYaml = text;
       this.dashboard.set(this.parseDashboard(parsed));
     } catch (err) {
       this.error.set(this.toErrorMessage(err));
     } finally {
       this.isLoading.set(false);
     }
+  }
+
+  /**
+   * Starts periodic polling for dashboard.yaml changes and stops on destroy.
+   * Does nothing if pollInterval is 0 (polling disabled).
+   * @param destroyRef Used to clear the interval when the component is destroyed.
+   */
+  startPolling(destroyRef: DestroyRef): void {
+    if (this.pollInterval === 0) return;
+    const intervalId = setInterval(() => this.poll(), this.pollInterval * 1000);
+    destroyRef.onDestroy(() => clearInterval(intervalId));
+  }
+
+  /** Silently fetches dashboard.yaml and updates the dashboard signal if the content changed. */
+  private async poll(): Promise<void> {
+    try {
+      const text = await firstValueFrom(
+        this.http.get('/dashboard.yaml', { responseType: 'text' }),
+      );
+      if (this.lastYaml === text) return;
+      this.lastYaml = text;
+      let parsed: unknown;
+      try {
+        parsed = parse(text);
+      } catch {
+        this.showNotification('warn', 'dashboard.yaml has invalid YAML syntax.');
+        return;
+      }
+      this.dashboard.set(this.parseDashboard(parsed));
+      this.showNotification('info', 'dashboard.yaml updated.');
+    } catch (err) {
+      this.showNotification('warn', this.toErrorMessage(err));
+    }
+  }
+
+  /**
+   * Shows a notification banner and clears it after 5 seconds.
+   * @param type    Severity level of the notification.
+   * @param message Human-readable message to display.
+   */
+  private showNotification(type: 'info' | 'warn', message: string): void {
+    if (this.notificationTimer !== null) {
+      clearTimeout(this.notificationTimer);
+    }
+    this.notification.set({ type, message });
+    this.notificationTimer = setTimeout(() => this.notification.set(null), 5000);
   }
 
   /** Maps a caught error to a human-readable message. */
@@ -56,14 +122,11 @@ export class DashboardService {
 
     if (typeof raw['version'] !== 'number')
       throw new Error('dashboard.version: must be a number');
-    if (typeof raw['updatedAt'] !== 'string')
-      throw new Error('dashboard.updatedAt: must be a string');
     if (!Array.isArray(raw['servers']))
       throw new Error('dashboard.servers: must be an array');
 
     return {
       version: raw['version'],
-      updatedAt: raw['updatedAt'],
       servers: raw['servers'].map((s, i) => this.parseServer(s, i)),
     };
   }

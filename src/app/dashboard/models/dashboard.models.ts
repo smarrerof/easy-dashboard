@@ -23,6 +23,5 @@ export interface Server {
 
 export interface Dashboard {
   version: number;
-  updatedAt: string;
   servers: Server[];
 }

@@ -49,6 +49,7 @@ export class DashboardPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.dashboardService.load();
+    this.dashboardService.startPolling(this.destroyRef);
   }
 
   /** Navigates to the detail view for the given server (mobile only). */

@@ -14,6 +14,14 @@
     </div>
   }
 
+  <!-- Notification banner -->
+  @if (dashboardService.notification(); as n) {
+    <div class="notification-panel" [class.is-warn]="n.type === 'warn'">
+      <span class="notification-label">{{ n.type === 'info' ? '[info]' : '[warn]' }}</span>
+      <span class="notification-message">{{ n.message }}</span>
+    </div>
+  }
+
   <!-- Error state -->
   @if (!dashboardService.isLoading() && dashboardService.error()) {
     <div class="error-panel">

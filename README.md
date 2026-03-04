@@ -11,6 +11,7 @@ easy-dashboard muestra de forma visual todos los servicios desplegados en tus se
 | Clave | Obligatorio | Valor |
 |---|---|---|
 | DATA_PATH | 🟢 Sí | Directorio local que contiene `dashboard.yaml` |
+| POLL_INTERVAL | ⚪ No | Intervalo en segundos para comprobar cambios en `dashboard.yaml` (defecto: `30`, `0` para desactivar) |
 
 En el `docker-compose.yml`:
 
@@ -33,8 +34,7 @@ proyecto/
 ## Estructura del archivo YAML
 
 ```yaml
-version: 1                        # Versión del esquema (requerida)
-updatedAt: '2026-03-04T00:00:00Z' # Fecha de última actualización (ISO 8601)
+version: 1  # Versión del esquema (requerida)
 
 servers:
   - id: string          # Identificador único del servidor
@@ -57,7 +57,6 @@ servers:
 
 ```yaml
 version: 1
-updatedAt: '2026-03-04T00:00:00Z'
 
 servers:
   - id: servidor-principal
