@@ -1,59 +1,133 @@
-# EasyDashboard
+# easy-dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.4.
+Panel de control minimalista con estética terminal para gestionar los servicios de un homelab. La configuración se define en un archivo YAML que se monta como volumen — sin base de datos, sin backend.
 
-## Development server
+easy-dashboard muestra de forma visual todos los servicios desplegados en tus servidores: nombre, puerto, estado (activo/inactivo) y un indicador de salud agregado por servidor. La configuración es completamente declarativa a través de un archivo `dashboard.yaml`.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## Configuración
+
+| Clave | Obligatorio | Valor |
+|---|---|---|
+| DATA_PATH | 🟢 Sí | Directorio local que contiene `dashboard.yaml` |
+
+En el `docker-compose.yml`:
+
+```yaml
+volumes:
+  - ./data:/usr/share/nginx/html/data:ro
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Crea el directorio y el archivo de configuración antes de arrancar el contenedor:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+proyecto/
+├── docker-compose.yml
+└── data/
+    └── dashboard.yaml
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
+## Estructura del archivo YAML
+
+```yaml
+version: 1                        # Versión del esquema (requerida)
+updatedAt: '2026-03-04T00:00:00Z' # Fecha de última actualización (ISO 8601)
+
+servers:
+  - id: string          # Identificador único del servidor
+    name: string        # Nombre visible en el panel
+    host: string        # IP o hostname
+    location: string    # Descripción de la ubicación (ej. "home", "rack")
+    categories:
+      - id: string      # Identificador único de la categoría
+        name: string    # Nombre visible de la categoría
+        services:
+          - id: string          # Identificador único del servicio
+            name: string        # Nombre visible del servicio
+            description: string # Descripción breve
+            url: string         # URL base del servicio (sin puerto)
+            port: number        # Puerto del servicio
+            status: string      # "active" | "inactive"
 ```
 
-## Building
+### Ejemplo básico
 
-To build the project run:
+```yaml
+version: 1
+updatedAt: '2026-03-04T00:00:00Z'
 
-```bash
-ng build
+servers:
+  - id: servidor-principal
+    name: Servidor Principal
+    host: 192.168.1.10
+    location: home
+    categories:
+      - id: media
+        name: Media
+        services:
+          - id: plex
+            name: Plex
+            description: Servidor personal de películas y series.
+            url: http://192.168.1.10
+            port: 32400
+            status: active
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## Uso con Docker Compose
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Imagen publicada en GitHub Container Registry
 
-```bash
-ng test
+La forma más sencilla. Solo necesitas el `docker-compose.yml` y el directorio `data/`.
+
+```yaml
+services:
+  easy-dashboard:
+    image: ghcr.io/smarrerof/easy-dashboard:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - <DATA_PATH>:/usr/share/nginx/html/data:ro
+    restart: unless-stopped
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
 ```bash
-ng e2e
+docker compose up -d
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Construcción local desde el código fuente
 
-## Additional Resources
+Si prefieres construir la imagen tú mismo:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```yaml
+services:
+  easy-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: easy-dashboard:local
+    ports:
+      - "8080:80"
+    volumes:
+      - <DATA_PATH>:/usr/share/nginx/html/data:ro
+    restart: unless-stopped
+```
+
+```bash
+docker compose up --build -d
+```
+
+---
+
+## Versiones disponibles
+
+Las imágenes publicadas están disponibles en [ghcr.io/smarrerof/easy-dashboard](https://github.com/smarrerof/easy-dashboard/pkgs/container/easy-dashboard).
+
+| Tag | Descripción |
+|---|---|
+| `latest` | Última versión estable publicada desde `main` |
+| `0.1.0` | Versión específica |
