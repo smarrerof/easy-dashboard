@@ -8,7 +8,9 @@ services:
       - "8080:80"
     environment:
       - POLL_INTERVAL=0 # Optional: Set the poll interval in seconds (default: 30, 0 to disable)
-      - APP_VERSION=dev
+      # APP_VERSION is baked into the image at build time (e.g. 0.2.0 for tagged releases, dev for local builds).
+      # Uncomment and set only if you need to override it:
+      # - APP_VERSION=custom
     volumes:
       - ./data:/usr/share/nginx/html/data:ro
     restart: unless-stopped
