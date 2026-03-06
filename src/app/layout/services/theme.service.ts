@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Injectable, type WritableSignal, effect, inject, signal } from '@angular/core';
+import { Injectable, effect, inject, signal } from '@angular/core';
 
 export type Theme = 'dark' | 'light';
 
@@ -9,29 +9,27 @@ const STORAGE_KEY = 'easy-dashboard-theme';
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
 
-  readonly theme: WritableSignal<Theme>;
+  private readonly _theme = signal<Theme>(this.getInitialTheme());
+  readonly theme = this._theme.asReadonly();
 
   constructor() {
-    this.theme = signal<Theme>(this.getInitialTheme());
-
     effect(() => {
-      const t = this.theme();
+      const t = this._theme();
       this.document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem(STORAGE_KEY, t);
+      (this.document.defaultView as Window | null)?.localStorage.setItem(STORAGE_KEY, t);
     });
   }
 
   /** Toggles between dark and light theme. */
   toggle(): void {
-    this.theme.update((t) => (t === 'dark' ? 'light' : 'dark'));
+    this._theme.update((t) => (t === 'dark' ? 'light' : 'dark'));
   }
 
-  /**
-   * Reads stored preference or system preference to determine the initial theme.
-   */
+  /** Reads stored preference or system preference to determine the initial theme. */
   private getInitialTheme(): Theme {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const win = this.document.defaultView as Window | null;
+    const stored = win?.localStorage.getItem(STORAGE_KEY) ?? null;
     if (stored === 'dark' || stored === 'light') return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return win?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 }

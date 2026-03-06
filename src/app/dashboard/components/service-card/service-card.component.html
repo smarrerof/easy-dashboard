@@ -7,7 +7,11 @@
     class="row"
     [class.row--inactive]="service().status === 'inactive'"
   >
-    <span class="dot" [class]="service().status === 'active' ? 'dot-active' : 'dot-inactive'" aria-hidden="true">●</span>
+    <span
+      class="dot"
+      [class.dot-active]="service().status === 'active'"
+      [class.dot-inactive]="service().status === 'inactive'"
+      aria-hidden="true">●</span>
     <span class="name">{{ service().name }}</span>
     <span class="port">:{{ service().port }}</span>
   </a>
@@ -20,7 +24,11 @@
     [class.card--inactive]="service().status === 'inactive'"
   >
     <div class="card__head">
-      <span class="dot" [class]="service().status === 'active' ? 'dot-active' : 'dot-inactive'" aria-hidden="true">●</span>
+      <span
+        class="dot"
+        [class.dot-active]="service().status === 'active'"
+        [class.dot-inactive]="service().status === 'inactive'"
+        aria-hidden="true">●</span>
       <span class="name">{{ service().name }}</span>
       <span class="port">:{{ service().port }}</span>
     </div>

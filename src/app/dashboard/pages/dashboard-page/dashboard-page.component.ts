@@ -1,9 +1,9 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   type OnInit,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -12,8 +12,6 @@ import type { Server } from '../../models/dashboard.models';
 import { DashboardService } from '../../services/dashboard.service';
 import { ServerListComponent } from '../../components/server-list/server-list.component';
 import { ServerDetailComponent } from '../../components/server-detail/server-detail.component';
-
-type View = { type: 'list' } | { type: 'detail'; server: Server };
 
 @Component({
   selector: 'app-dashboard-page',
@@ -25,22 +23,20 @@ type View = { type: 'list' } | { type: 'detail'; server: Server };
 export class DashboardPageComponent implements OnInit {
   protected readonly dashboardService = inject(DashboardService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly document = inject(DOCUMENT);
 
-  protected readonly view = signal<View>({ type: 'list' });
+  protected readonly selectedServer = signal<Server | null>(null);
   protected readonly isDesktop = signal(false);
 
-  protected readonly selectedServer = computed((): Server | null => {
-    const v = this.view();
-    return v.type === 'detail' ? v.server : null;
-  });
-
   constructor() {
-    const mq = window.matchMedia('(min-width: 768px)');
+    const mq = (this.document.defaultView as Window | null)?.matchMedia('(min-width: 768px)');
+    if (!mq) return;
+
     this.isDesktop.set(mq.matches);
 
     const listener = (e: MediaQueryListEvent) => {
       this.isDesktop.set(e.matches);
-      if (e.matches) this.view.set({ type: 'list' });
+      if (e.matches) this.selectedServer.set(null);
     };
 
     mq.addEventListener('change', listener);
@@ -54,11 +50,16 @@ export class DashboardPageComponent implements OnInit {
 
   /** Navigates to the detail view for the given server (mobile only). */
   protected selectServer(server: Server): void {
-    this.view.set({ type: 'detail', server });
+    this.selectedServer.set(server);
   }
 
   /** Returns to the server list view. */
   protected goBack(): void {
-    this.view.set({ type: 'list' });
+    this.selectedServer.set(null);
+  }
+
+  /** Retries loading the dashboard after an error. */
+  protected retry(): void {
+    this.dashboardService.load();
   }
 }

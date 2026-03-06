@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { Injectable, inject, signal, type DestroyRef } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
@@ -19,24 +20,30 @@ declare global {
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
   private readonly http = inject(HttpClient);
+  private readonly document = inject(DOCUMENT);
 
-  readonly dashboard = signal<Dashboard | null>(null);
-  readonly isLoading = signal(false);
-  readonly error = signal<string | null>(null);
-  readonly notification = signal<{ type: 'info' | 'warn'; message: string } | null>(null);
+  private readonly _dashboard = signal<Dashboard | null>(null);
+  private readonly _isLoading = signal(false);
+  private readonly _error = signal<string | null>(null);
+  private readonly _notification = signal<{ type: 'info' | 'warn'; message: string } | null>(null);
+
+  readonly dashboard = this._dashboard.asReadonly();
+  readonly isLoading = this._isLoading.asReadonly();
+  readonly error = this._error.asReadonly();
+  readonly notification = this._notification.asReadonly();
 
   private notificationTimer: ReturnType<typeof setTimeout> | null = null;
   private lastYaml: string | null = null;
 
   /** Reads the poll interval (in seconds) from window.APP_CONFIG, defaulting to 30. Set to 0 to disable polling. */
   private get pollInterval(): number {
-    return window.APP_CONFIG?.reloadInterval ?? 30;
+    return (this.document.defaultView as Window | null)?.APP_CONFIG?.reloadInterval ?? 30;
   }
 
   /** Fetches and parses the dashboard YAML, updating reactive signals. */
   async load(): Promise<void> {
-    this.isLoading.set(true);
-    this.error.set(null);
+    this._isLoading.set(true);
+    this._error.set(null);
 
     try {
       const text = await firstValueFrom(
@@ -49,11 +56,11 @@ export class DashboardService {
         throw new Error('dashboard.yaml has invalid YAML syntax — check the file for formatting errors.');
       }
       this.lastYaml = text;
-      this.dashboard.set(this.parseDashboard(parsed));
+      this._dashboard.set(this.parseDashboard(parsed));
     } catch (err) {
-      this.error.set(this.toErrorMessage(err));
+      this._error.set(this.toErrorMessage(err));
     } finally {
-      this.isLoading.set(false);
+      this._isLoading.set(false);
     }
   }
 
@@ -83,7 +90,7 @@ export class DashboardService {
         this.showNotification('warn', 'dashboard.yaml has invalid YAML syntax.');
         return;
       }
-      this.dashboard.set(this.parseDashboard(parsed));
+      this._dashboard.set(this.parseDashboard(parsed));
       this.showNotification('info', 'dashboard.yaml updated.');
     } catch (err) {
       this.showNotification('warn', this.toErrorMessage(err));
@@ -99,8 +106,8 @@ export class DashboardService {
     if (this.notificationTimer !== null) {
       clearTimeout(this.notificationTimer);
     }
-    this.notification.set({ type, message });
-    this.notificationTimer = setTimeout(() => this.notification.set(null), 5000);
+    this._notification.set({ type, message });
+    this.notificationTimer = setTimeout(() => this._notification.set(null), 5000);
   }
 
   /** Maps a caught error to a human-readable message. */

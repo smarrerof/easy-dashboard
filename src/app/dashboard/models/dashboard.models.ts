@@ -25,3 +25,16 @@ export interface Dashboard {
   version: number;
   servers: Server[];
 }
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Server {
+  /** Returns the count of active services across all categories. */
+  export function getActiveServiceCount(server: Server): number {
+    return server.categories.flatMap((c) => c.services).filter((s) => s.status === 'active').length;
+  }
+
+  /** Returns the total count of services across all categories. */
+  export function getTotalServiceCount(server: Server): number {
+    return server.categories.flatMap((c) => c.services).length;
+  }
+}
