@@ -80,6 +80,108 @@ Rules:
 - Document `@param` and `@returns` only when their purpose is not obvious from the signature
 - No `@param` for `self-explanatory` arguments like `id: string` or `index: number`
 
+## Member ordering (components & services)
+
+Use `// #region Name` / `// #endregion` to delimit sections (VS Code folds them).
+Keep all regions in every file even if empty — it makes the structure consistent and obvious where to add things.
+
+The `constructor` sits **between Computed and Lifecycle, outside any region** — it is always visible.
+
+When a region has content, leave one blank line after `// #region Name` and one blank line before `// #endregion`. Empty regions have no blank lines.
+
+Mandatory order inside every Angular class:
+
+1. `#region Constants` — `static readonly` class-level constants
+2. `#region Inputs & Outputs` — `input()` first (alphabetical), blank line, then `output()` (alphabetical)
+3. `#region View Queries` — `viewChild()`, `viewChildren()`
+4. `#region Dependencies` — `inject()`, alphabetical order
+5. `#region Fields` — plain instance fields grouped by visibility (`private` / `protected` / `public`), each group alphabetical, groups separated by a blank line
+6. `#region Properties` — `get` / `set` accessors
+7. `#region State` — `signal()`, alphabetical order
+8. `#region Computed` — `computed()`, alphabetical order
+9. `constructor` ← outside any region
+10. `#region Lifecycle` — `ngOnInit`, `ngOnChanges`, `ngOnDestroy`, … (no constructor here)
+11. `#region Event Handlers` — `protected` methods called from the template
+12. `#region Public Methods` — public API of the component / service
+13. `#region Private Helpers` — `private` methods
+
+Example:
+
+```ts
+@Component({ ... })
+export class ServerCardComponent {
+
+  // #region Constants
+
+  static readonly MAX_SERVICES = 50;
+
+  // #endregion
+
+  // #region Inputs & Outputs
+
+  readonly server = input.required<Server>();
+
+  readonly selected = output<Server>();
+
+  // #endregion
+
+  // #region View Queries
+  // #endregion
+
+  // #region Dependencies
+
+  private readonly dashboardService = inject(DashboardService);
+
+  // #endregion
+
+  // #region Fields
+
+  private lastYaml: string | null = null;
+  private notificationTimer: ReturnType<typeof setTimeout> | null = null;
+
+  // #endregion
+
+  // #region Properties
+
+  get isActive(): boolean {
+    return this.server().status === 'active';
+  }
+
+  // #endregion
+
+  // #region State
+
+  protected readonly isExpanded = signal(false);
+
+  // #endregion
+
+  // #region Computed
+
+  protected readonly activeCount = computed(() => Server.getActiveServiceCount(this.server()));
+
+  // #endregion
+
+  constructor() {}
+
+  // #region Lifecycle
+  // #endregion
+
+  // #region Event Handlers
+
+  protected onCardClick(): void {
+    this.selected.emit(this.server());
+  }
+
+  // #endregion
+
+  // #region Public Methods
+  // #endregion
+
+  // #region Private Helpers
+  // #endregion
+}
+```
+
 ## Git workflow
 
 - Commit and push only to the current branch (`develop` or a feature branch)

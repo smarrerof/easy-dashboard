@@ -11,19 +11,62 @@ import { ServiceCardComponent } from '../service-card/service-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategorySectionComponent implements OnInit {
+
+  // #region Constants
+  // #endregion
+
+  // #region Inputs & Outputs
+
   readonly category = input.required<Category>();
-  readonly compact = input(false);
   readonly collapsible = input(false);
+  readonly compact = input(false);
   readonly defaultExpanded = input(true);
 
+  // #endregion
+
+  // #region View Queries
+  // #endregion
+
+  // #region Dependencies
+  // #endregion
+
+  // #region Fields
+  // #endregion
+
+  // #region Properties
+  // #endregion
+
+  // #region State
+
   protected readonly isExpanded = signal(true);
+
+  // #endregion
+
+  // #region Computed
+  // #endregion
+
+  constructor() {}
+
+  // #region Lifecycle
 
   ngOnInit(): void {
     this.isExpanded.set(this.defaultExpanded());
   }
 
+  // #endregion
+
+  // #region Event Handlers
+
   /** Toggles the collapsed/expanded state of this section. */
   protected toggle(): void {
     this.isExpanded.update((v) => !v);
   }
+
+  // #endregion
+
+  // #region Public Methods
+  // #endregion
+
+  // #region Private Helpers
+  // #endregion
 }

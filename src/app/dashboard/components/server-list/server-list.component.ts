@@ -11,8 +11,48 @@ import { ServerCardComponent } from '../server-card/server-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServerListComponent {
-  readonly servers = input.required<Server[]>();
+
+  // #region Constants
+  // #endregion
+
+  // #region Inputs & Outputs
+
   readonly isDesktop = input.required<boolean>();
+  readonly servers = input.required<Server[]>();
 
   readonly serverSelected = output<Server>();
+
+  // #endregion
+
+  // #region View Queries
+  // #endregion
+
+  // #region Dependencies
+  // #endregion
+
+  // #region Fields
+  // #endregion
+
+  // #region Properties
+  // #endregion
+
+  // #region State
+  // #endregion
+
+  // #region Computed
+  // #endregion
+
+  constructor() {}
+
+  // #region Lifecycle
+  // #endregion
+
+  // #region Event Handlers
+  // #endregion
+
+  // #region Public Methods
+  // #endregion
+
+  // #region Private Helpers
+  // #endregion
 }

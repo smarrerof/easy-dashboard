@@ -21,12 +21,39 @@ import { ServerDetailComponent } from '../../components/server-detail/server-det
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardPageComponent implements OnInit {
+
+  // #region Constants
+  // #endregion
+
+  // #region Inputs & Outputs
+  // #endregion
+
+  // #region View Queries
+  // #endregion
+
+  // #region Dependencies
+
   protected readonly dashboardService = inject(DashboardService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
 
-  protected readonly selectedServer = signal<Server | null>(null);
+  // #endregion
+
+  // #region Fields
+  // #endregion
+
+  // #region Properties
+  // #endregion
+
+  // #region State
+
   protected readonly isDesktop = signal(false);
+  protected readonly selectedServer = signal<Server | null>(null);
+
+  // #endregion
+
+  // #region Computed
+  // #endregion
 
   constructor() {
     const mq = (this.document.defaultView as Window | null)?.matchMedia('(min-width: 768px)');
@@ -43,15 +70,16 @@ export class DashboardPageComponent implements OnInit {
     this.destroyRef.onDestroy(() => mq.removeEventListener('change', listener));
   }
 
+  // #region Lifecycle
+
   async ngOnInit(): Promise<void> {
     await this.dashboardService.load();
     this.dashboardService.startPolling(this.destroyRef);
   }
 
-  /** Navigates to the detail view for the given server (mobile only). */
-  protected selectServer(server: Server): void {
-    this.selectedServer.set(server);
-  }
+  // #endregion
+
+  // #region Event Handlers
 
   /** Returns to the server list view. */
   protected goBack(): void {
@@ -62,4 +90,17 @@ export class DashboardPageComponent implements OnInit {
   protected retry(): void {
     this.dashboardService.load();
   }
+
+  /** Navigates to the detail view for the given server (mobile only). */
+  protected selectServer(server: Server): void {
+    this.selectedServer.set(server);
+  }
+
+  // #endregion
+
+  // #region Public Methods
+  // #endregion
+
+  // #region Private Helpers
+  // #endregion
 }

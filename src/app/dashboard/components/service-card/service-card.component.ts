@@ -9,11 +9,52 @@ import type { Service } from '../../models/dashboard.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServiceCardComponent {
-  readonly service = input.required<Service>();
+
+  // #region Constants
+  // #endregion
+
+  // #region Inputs & Outputs
+
   readonly compact = input(false);
+  readonly service = input.required<Service>();
+
+  // #endregion
+
+  // #region View Queries
+  // #endregion
+
+  // #region Dependencies
+  // #endregion
+
+  // #region Fields
+  // #endregion
+
+  // #region Properties
+  // #endregion
+
+  // #region State
+  // #endregion
+
+  // #region Computed
 
   /** Full URL including port. */
   protected readonly fullUrl = computed(
     () => `${this.service().url}:${this.service().port}`,
   );
+
+  // #endregion
+
+  constructor() {}
+
+  // #region Lifecycle
+  // #endregion
+
+  // #region Event Handlers
+  // #endregion
+
+  // #region Public Methods
+  // #endregion
+
+  // #region Private Helpers
+  // #endregion
 }
